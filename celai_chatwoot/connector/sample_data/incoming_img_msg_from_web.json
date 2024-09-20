@@ -1,0 +1,160 @@
+{
+    "account": {
+        "id": 8,
+        "name": "Demos"
+    },
+    "additional_attributes": {},
+    "content_attributes": {},
+    "content_type": "text",
+    "content": null,
+    "conversation": {
+        "additional_attributes": {
+            "browser": {
+                "device_name": "Unknown",
+                "browser_name": "Chrome",
+                "platform_name": "macOS",
+                "browser_version": "128.0.0.0",
+                "platform_version": "10.15.7"
+            },
+            "referer": "https://cdpn.io/cpe/boomboom/index.html?key=index.html-16fc3e64-bff7-0541-31d1-6df2b04d7723",
+            "initiated_at": {
+                "timestamp": "Fri Sep 06 2024 19:20:41 GMT-0300 (Argentina Standard Time)"
+            },
+            "browser_language": "es"
+        },
+        "can_reply": true,
+        "channel": "Channel::WebWidget",
+        "contact_inbox": {
+            "id": 5224,
+            "contact_id": 5094,
+            "inbox_id": 211,
+            "source_id": "a8877d29-1b82-4563-8d95-491666f1e267",
+            "created_at": "2024-09-06T22:20:32.538Z",
+            "updated_at": "2024-09-06T22:20:32.538Z",
+            "hmac_verified": false,
+            "pubsub_token": "MUewFJkusYttJShxwP8osBkW"
+        },
+        "id": 33,
+        "inbox_id": 211,
+        "messages": [
+            {
+                "id": 436117,
+                "content": null,
+                "account_id": 8,
+                "inbox_id": 211,
+                "conversation_id": 33,
+                "message_type": 0,
+                "created_at": 1725664594,
+                "updated_at": "2024-09-06T23:16:34.107Z",
+                "private": false,
+                "status": "sent",
+                "source_id": null,
+                "content_type": "text",
+                "content_attributes": {},
+                "sender_type": "Contact",
+                "sender_id": 5094,
+                "external_source_ids": {},
+                "additional_attributes": {},
+                "processed_message_content": null,
+                "conversation": {
+                    "assignee_id": null,
+                    "unread_count": 8,
+                    "last_activity_at": 1725664594
+                },
+                "attachments": [
+                    {
+                        "id": 11529,
+                        "message_id": 436117,
+                        "file_type": "image",
+                        "account_id": 8,
+                        "extension": null,
+                        "data_url": "https://chatwoot.celai.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbG91IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--1a8d1d96c0630370245a7f741b16990c82c4e3bb/ale1.jpg",
+                        "thumb_url": "https://chatwoot.celai.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbG91IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--1a8d1d96c0630370245a7f741b16990c82c4e3bb/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--27ede0471899a6e40b40ba7e4525adebc0ea198f/ale1.jpg",
+                        "file_size": 160813
+                    }
+                ],
+                "sender": {
+                    "additional_attributes": {
+                        "created_at_ip": "181.170.160.152"
+                    },
+                    "custom_attributes": {},
+                    "email": null,
+                    "id": 5094,
+                    "identifier": null,
+                    "name": "cold-wind-258",
+                    "phone_number": null,
+                    "thumbnail": "",
+                    "type": "contact"
+                }
+            }
+        ],
+        "labels": [],
+        "meta": {
+            "sender": {
+                "additional_attributes": {
+                    "created_at_ip": "181.170.160.152"
+                },
+                "custom_attributes": {},
+                "email": null,
+                "id": 5094,
+                "identifier": null,
+                "name": "cold-wind-258",
+                "phone_number": null,
+                "thumbnail": "",
+                "type": "contact"
+            },
+            "assignee": null,
+            "team": null,
+            "hmac_verified": false
+        },
+        "status": "open",
+        "custom_attributes": {},
+        "snoozed_until": null,
+        "unread_count": 8,
+        "first_reply_created_at": null,
+        "priority": null,
+        "agent_last_seen_at": 0,
+        "contact_last_seen_at": 1725664428,
+        "timestamp": 1725664594,
+        "created_at": 1725661241
+    },
+    "created_at": "2024-09-06T23:16:34.107Z",
+    "id": 436117,
+    "inbox": {
+        "id": 211,
+        "name": "Test"
+    },
+    "message_type": "incoming",
+    "private": false,
+    "sender": {
+        "account": {
+            "id": 8,
+            "name": "Demos"
+        },
+        "additional_attributes": {
+            "created_at_ip": "181.170.160.152"
+        },
+        "avatar": "",
+        "custom_attributes": {},
+        "email": "foo@bar.com",
+        "id": 5094,
+        "identifier": null,
+        "name": "cold-wind-258",
+        "phone_number": "123456",
+        "thumbnail": ""
+    },
+    "source_id": null,
+    "attachments": [
+        {
+            "id": 11529,
+            "message_id": 436117,
+            "file_type": "image",
+            "account_id": 8,
+            "extension": null,
+            "data_url": "https://chatwoot.celai.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbG91IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--1a8d1d96c0630370245a7f741b16990c82c4e3bb/ale1.jpg",
+            "thumb_url": "https://chatwoot.celai.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbG91IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--1a8d1d96c0630370245a7f741b16990c82c4e3bb/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--27ede0471899a6e40b40ba7e4525adebc0ea198f/ale1.jpg",
+            "file_size": 160813
+        }
+    ],
+    "event": "message_created"
+}

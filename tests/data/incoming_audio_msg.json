@@ -1,0 +1,152 @@
+{
+    "account": {
+      "id": 4,
+      "name": "Development"
+    },
+    "additional_attributes": {},
+    "content_attributes": {},
+    "content_type": "text",
+    "content": null,
+    "conversation": {
+      "additional_attributes": {
+        "chat_id": 1320141990
+      },
+      "can_reply": true,
+      "channel": "Channel::Telegram",
+      "contact_inbox": {
+        "id": 92,
+        "contact_id": 60,
+        "inbox_id": 4,
+        "source_id": "1320141990",
+        "created_at": "2023-07-21T02:42:56.383Z",
+        "updated_at": "2023-07-21T02:42:56.383Z",
+        "hmac_verified": false,
+        "pubsub_token": "ZzUP2jYAxBeYE8q1eHqQPo8w"
+      },
+      "id": 73,
+      "inbox_id": 4,
+      "messages": [
+        {
+          "id": 2467,
+          "content": null,
+          "account_id": 4,
+          "inbox_id": 4,
+          "conversation_id": 73,
+          "message_type": 0,
+          "created_at": 1690060945,
+          "updated_at": "2023-07-22T21:22:25.853Z",
+          "private": false,
+          "status": "sent",
+          "source_id": "1916",
+          "content_type": "text",
+          "content_attributes": {},
+          "sender_type": "Contact",
+          "sender_id": 60,
+          "external_source_ids": {},
+          "additional_attributes": {},
+          "processed_message_content": null,
+          "conversation": {
+            "assignee_id": null,
+            "unread_count": 1,
+            "last_activity_at": 1690060945
+          },
+          "attachments": [
+            {
+              "id": 207,
+              "message_id": 2467,
+              "file_type": "audio",
+              "account_id": 4,
+              "extension": null,
+              "data_url": "https://chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZUU9IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--c164c53e490981334d4465d79fd8c24f4b835e88/file_41.oga",
+              "thumb_url": "",
+              "file_size": 7989
+            }
+          ],
+          "sender": {
+            "additional_attributes": {
+              "username": null,
+              "language_code": "en"
+            },
+            "custom_attributes": {},
+            "email": null,
+            "id": 60,
+            "identifier": null,
+            "name": "Ale Martin",
+            "phone_number": null,
+            "thumbnail": "https://chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZEE9IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--bb17723524bc1a2752fe4f96c9d011fbfb7dfda4/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--27ede0471899a6e40b40ba7e4525adebc0ea198f/file_39.jpg",
+            "type": "contact"
+          }
+        }
+      ],
+      "labels": [],
+      "meta": {
+        "sender": {
+          "additional_attributes": {
+            "username": null,
+            "language_code": "en"
+          },
+          "custom_attributes": {},
+          "email": null,
+          "id": 60,
+          "identifier": null,
+          "name": "Ale Martin",
+          "phone_number": null,
+          "thumbnail": "https://chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZEE9IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--bb17723524bc1a2752fe4f96c9d011fbfb7dfda4/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--27ede0471899a6e40b40ba7e4525adebc0ea198f/file_39.jpg",
+          "type": "contact"
+        },
+        "assignee": null,
+        "team": null,
+        "hmac_verified": false
+      },
+      "status": "pending",
+      "custom_attributes": {},
+      "snoozed_until": null,
+      "unread_count": 1,
+      "first_reply_created_at": "2023-07-22T20:43:02.237Z",
+      "priority": null,
+      "agent_last_seen_at": 1690060757,
+      "contact_last_seen_at": 0,
+      "timestamp": 1690060945,
+      "created_at": 1689907377
+    },
+    "created_at": "2023-07-22T21:22:25.853Z",
+    "id": 2467,
+    "inbox": {
+      "id": 4,
+      "name": "lola_cip_bot"
+    },
+    "message_type": "incoming",
+    "private": false,
+    "sender": {
+      "account": {
+        "id": 4,
+        "name": "Development"
+      },
+      "additional_attributes": {
+        "username": null,
+        "language_code": "en"
+      },
+      "avatar": "https://chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZEE9IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--bb17723524bc1a2752fe4f96c9d011fbfb7dfda4/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--27ede0471899a6e40b40ba7e4525adebc0ea198f/file_39.jpg",
+      "custom_attributes": {},
+      "email": null,
+      "id": 60,
+      "identifier": null,
+      "name": "Ale Martin",
+      "phone_number": null,
+      "thumbnail": "https://chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZEE9IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--bb17723524bc1a2752fe4f96c9d011fbfb7dfda4/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--27ede0471899a6e40b40ba7e4525adebc0ea198f/file_39.jpg"
+    },
+    "source_id": "1916",
+    "attachments": [
+      {
+        "id": 207,
+        "message_id": 2467,
+        "file_type": "audio",
+        "account_id": 4,
+        "extension": null,
+        "data_url": "https://chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBZUU9IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--c164c53e490981334d4465d79fd8c24f4b835e88/file_41.oga",
+        "thumb_url": "",
+        "file_size": 7989
+      }
+    ],
+    "event": "message_created"
+  }
