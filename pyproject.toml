@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "celai-chatwoot"
-version = "0.1.1"
+version = "0.1.2"
 description = ""
 authors = ["Alex Martin <alejamp@gmail.com>"]
 readme = "README.md"
@@ -21,8 +21,9 @@ Issues = "https://github.com/cel-ai/celai-chatwoot/issues"
 #Runtime
 python = "^3.11"
 # Dependencies for the project:
-woot =  { git = "https://github.com/dearkafka/woot.git", rev = "3be2156" }
 celai = "^0.1.14"
+aiohttp = ">=3.9.5"
+
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.2.0"

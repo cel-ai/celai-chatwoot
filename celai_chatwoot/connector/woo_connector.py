@@ -22,7 +22,7 @@ from cel.gateway.model.outgoing import OutgoingMessage,\
 from celai_chatwoot.connector.model.woot_lead import WootLead
 from celai_chatwoot.connector.model.woot_message import WootMessage
 from celai_chatwoot.connector.msg_utils import send_text_message
-from .bot_utils import upsert_bot
+from .bot_utils import ChatwootAgentsBots
 
 
 
@@ -163,14 +163,16 @@ class WootConnector(BaseConnector):
         
         is_private = (metadata or {}).get("private", False)
         
-        log.debug(f"Sending message to Chatwoot acc: {lead.account_id}, inbox: {lead.inbox_id}, conv: {lead.conversation_id}, private:{is_private}, text: {text}")
-        await send_text_message(chatwoo_url=self.chatwoot_url,
-                          access_key=self.access_key,
-                          account_id=lead.account_id,
-                          conversation_id=lead.conversation_id,
-                          private=is_private,
-                          text=text)
-
+        log.debug(f"Sending message to Chatwoot acc: {lead.account_id}, inbox: {lead.inbox_id}, conv: {lead.conversation_id}, private:{is_private}, text: {text}")   
+        
+        await send_text_message(base_url=self.chatwoot_url,
+                                account_id=lead.account_id,
+                                conversation_id=lead.conversation_id,
+                                access_key=self.access_key,
+                                content=text,
+                                content_attributes=metadata,
+                                message_type="outgoing",
+                                private=is_private)
         
     async def send_typing_action(self, lead: WootLead):    
         log.warning("Chatwoot typing action is not implemented yet")
@@ -206,12 +208,16 @@ class WootConnector(BaseConnector):
             # webhook_url = f"{context.webhook_url}/{self.router.prefix}/webhook/{self.security_token}"
             log.debug(f"Updating Chatwoot Bot webhook url to: {webhook_url}")
             # TODO: update chatwoot webhook url by bot name
-            res = await upsert_bot(chatwoo_url=self.chatwoot_url,
-                                access_key=self.access_key,
-                                account_id=self.account_id,
-                                name=self.bot_name,
-                                webhook_url=webhook_url,
-                                description=self.bot_description)
+            client = ChatwootAgentsBots(
+                base_url=self.chatwoot_url,
+                account_id=self.account_id,
+                access_key=self.access_key
+            )
+            
+            res = await client.upsert_bot(name=self.bot_name,
+                                          outgoing_url=webhook_url,
+                                          description=self.bot_description)
+            
             log.debug(f"Chatwoot Bot updated: {res}")
             
         try:

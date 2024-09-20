@@ -1,112 +1,160 @@
-from woot.api import AsyncChatwoot
 from typing import Optional, Dict
 from loguru import logger as log    
+import aiohttp
+from typing import Any, Dict, Optional
+
+class ChatwootAgentsBots:
     
-async def create_account_bot(chatwoo_url: str,
-                             access_key: str,
-                             account_id: int,
-                             name: str,
-                             description: str):
-    
-    chatwoot = AsyncChatwoot(chatwoot_url=chatwoo_url, access_key=access_key)
+    def __init__(self, 
+                 base_url: str, 
+                 account_id: str, 
+                 access_key: str, 
+                 headers: Optional[Dict[str, str]] = None):
+        self.base_url = base_url
+        self.account_id = account_id
+        self.access_key = access_key
+        self.headers = headers or {}
+        self.headers.update({
+            'api_access_token': access_key
+        })
 
-    bot = await chatwoot.account_agent_bot.create(
-        account_id=account_id,
-        name=name,
-        description=description
-    )
-    return bot
+    async def list_agent_bots(self) -> Dict[str, Any]:
+        url = f"{self.base_url}/api/v1/accounts/{self.account_id}/agent_bots"
+        log.debug(f"Listing agent bots from Chatwoot url: {url}")
 
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=self.headers) as response:
+                response_data = await response.json()
+                return response_data
 
-async def find_bot_by_name(chatwoo_url: str,
-                           access_key: str,
-                           account_id: int,
-                           name: str) -> Optional[Dict]:
-    
-    chatwoot = AsyncChatwoot(chatwoot_url=chatwoo_url, access_key=access_key)
-
-    bots = chatwoot.account_agent_bot
-    response = await bots.list(account_id=account_id)
-
-    for bot in response.body:
-        if bot["name"] == name:
-            return bot
-    return None
-
-
-async def update_bot(chatwoo_url: str,
-                     access_key: str,
-                     account_id: int,
-                     bot_id: int,
-                     name: str,
-                     description: Optional[str] = None,
-                     webhook_url: Optional[str] = None):
+    async def create_agent_bot(self,
+                                name: Optional[str] = None,
+                                description: Optional[str] = None,
+                                outgoing_url: Optional[str] = None
+                            ) -> Dict[str, Any]:
         
-        chatwoot = AsyncChatwoot(chatwoot_url=chatwoo_url, access_key=access_key)
-    
-        bot = await chatwoot.account_agent_bot.update(
-            account_id=account_id,
-            id=bot_id,
-            name=name,
-            description=description,
-            outgoing_url=webhook_url
-        )
+        url = f"{self.base_url}/api/v1/accounts/{self.account_id}/agent_bots"
+        log.debug(f"Creating agent bot at Chatwoot url: {url}")
+
+        payload = {
+            'name': name,
+            'description': description,
+            'outgoing_url': outgoing_url
+        }
+
+        payload = {k: v for k, v in payload.items() if v is not None}
+
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, json=payload, headers=self.headers) as response:
+                response_data = await response.json()
+                return response_data
+
+    async def delete_agent_bot(self, agent_bot_id: str) -> Dict[str, Any]:
+        url = f"{self.base_url}/api/v1/accounts/{self.account_id}/agent_bots/{agent_bot_id}"
+        log.debug(f"Deleting agent bot from Chatwoot url: {url}")
+
+        async with aiohttp.ClientSession() as session:
+            async with session.delete(url, headers=self.headers) as response:
+                response_data = await response.json()
+                return response_data
+
+    async def get_agent_bot(self, agent_bot_id: str) -> Dict[str, Any]:
+        url = f"{self.base_url}/api/v1/accounts/{self.account_id}/agent_bots/{agent_bot_id}"
+        log.debug(f"Getting agent bot from Chatwoot url: {url}")
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=self.headers) as response:
+                response_data = await response.json()
+                return response_data
+
+
+    async def update_agent_bot(self,
+                                agent_bot_id: str,
+                                name: Optional[str],
+                                description: Optional[str] = None,
+                                outgoing_url: Optional[str] = None) -> Dict[str, Any]:
+        
+        url = f"{self.base_url}/api/v1/accounts/{self.account_id}/agent_bots/{agent_bot_id}"
+        log.debug(f"Updating agent bot at Chatwoot url: {url}")
+
+        payload = {
+            'name': name,
+            'description': description,
+            'outgoing_url': outgoing_url
+        }
+
+        payload = {k: v for k, v in payload.items() if v is not None}
+
+        async with aiohttp.ClientSession() as session:
+            async with session.patch(url, json=payload, headers=self.headers) as response:
+                response_data = await response.json()
+                return response_data
+
+
+
+    async def find_agent_bot_by_name(self,name: str):
+        
+        bots = await self.list_agent_bots()
+        bot = next((bot for bot in bots if bot["name"] == name), None)
         return bot
 
 
-async def upsert_bot(chatwoo_url: str,
-                     access_key: str,
-                     account_id: int,
-                     name: str,
-                     webhook_url: str,
-                     description: str):
+    async def upsert_bot(self,
+                        name: Optional[str] = None,
+                        description: Optional[str] = None,
+                        outgoing_url: Optional[str] = None):
+        bot = await self.find_agent_bot_by_name(name)
         
-        bot = await find_bot_by_name(chatwoo_url, access_key, account_id, name)
         if bot:
-            log.info(f"Bot {name} already exists. Updating...")
-            return await update_bot(chatwoo_url, 
-                                    access_key, 
-                                    account_id, 
-                                    bot["id"], 
-                                    name, 
-                                    description, 
-                                    webhook_url)
+            bot_id = bot["id"]
+            log.debug(f"Bot {name} id:{bot_id} found. Updating bot with webhook url {outgoing_url}")
+            return await self.update_agent_bot(bot_id, name, description, outgoing_url)
+            
+        log.warning(f"Bot {name} not found. Creating bot with webhook url {outgoing_url}")
+        return await self.create_agent_bot(name, description, outgoing_url)
+        
+
+
+
+if __name__ == "__main__":
     
-        log.info(f"Bot {name} does not exist. Creating...")
-        return await create_account_bot(chatwoo_url, 
-                                        access_key, 
-                                        account_id, 
-                                        name, 
-                                        description)
+    import asyncio
+    import os
+
+    async def main():
+        
+        client = ChatwootAgentsBots(
+            base_url=os.environ.get("CHATWOOT_URL"),
+            account_id=os.environ.get("CHATWOOT_ACCOUNT_ID"),
+            access_key=os.environ.get("CHATWOOT_ACCESS_KEY")
+        )
+
+        bot_name = "Testing Ale Bot"
+        bot_desc = "This is a test bot"
+        
+        # Upsert bot
+        res = await client.upsert_bot(
+            name=bot_name,
+            description=bot_desc,
+            outgoing_url="https://alebot.ngrok.io/webhook"
+        )
+        log.debug(f"Bot created or updated: {res}")
+        
+        #  check if the bot was created or updated
+        bot = await client.find_agent_bot_by_name(
+            name=bot_name
+        )
+        
+        # find bot by name
+        log.debug(f"Bot found: {bot}")
+        
+        
+        
+        
+        
+        
+        
 
 
 
-
-
-
-
-# if __name__ == "__main__":
-    # import asyncio
-    # asyncio.run(main())
-    
-    # asyncio.run(create_account_bot(os.environ.get("CHATWOOT_URL"),
-    #                                os.environ.get("CHATWOOT_ACCESS_KEY"),
-    #                                os.environ.get("CHATWOOT_ACCOUNT_ID"),
-    #                                "Ale Test Bot",
-    #                                "Bot de prueba para Ale"))
-
-    # res = asyncio.run(find_bot_by_name(os.environ.get("CHATWOOT_URL"),
-    #                                 os.environ.get("CHATWOOT_ACCESS_KEY"),
-    #                                 os.environ.get("CHATWOOT_ACCOUNT_ID"),
-    #                                 "Ale Test Bot"))
-    
-    
-    # res = asyncio.run(update_bot(os.environ.get("CHATWOOT_URL"),
-    #                             os.environ.get("CHATWOOT_ACCESS_KEY"),
-    #                             os.environ.get("CHATWOOT_ACCOUNT_ID"),
-    #                             73,
-    #                             "Ale Test Bot",
-    #                             "Bot de prueba para Ale",
-    #                             "https://alebot.com/webhook"))
-    
-    # print (res)
+    asyncio.run(main())
