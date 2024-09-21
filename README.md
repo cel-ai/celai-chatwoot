@@ -60,7 +60,7 @@ Run your Cel.ai assistant, then a new Chatwoot bot called "Bot Name" will be cre
 |                     | RECEIVE | SEND  |
 |---------------------|:-------:|:-----:|
 | **Text**            |    ✅    |   ✅   |
-| **Image**           |    ✅    |   ❌   |
+| **Image**           |    ✅    |   ✅   |
 | **Audio**           |    ✅    |   ❌   |
 | **Files**           |    ✅    |   ❌   |
 | **Custom Attributes** |    ❌    |   ❌   |

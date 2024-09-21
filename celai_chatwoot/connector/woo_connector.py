@@ -1,8 +1,10 @@
 import asyncio
+import base64
 import os
 import json
 from typing import Any, Dict
 from urllib.parse import urljoin
+import aiohttp
 from loguru import logger as log
 from aiogram import Bot
 from fastapi import APIRouter, BackgroundTasks
@@ -21,7 +23,7 @@ from cel.gateway.model.outgoing import OutgoingMessage,\
 
 from celai_chatwoot.connector.model.woot_lead import WootLead
 from celai_chatwoot.connector.model.woot_message import WootMessage
-from celai_chatwoot.connector.msg_utils import send_text_message
+from celai_chatwoot.connector.msg_utils import ChatwootMessages
 from .bot_utils import ChatwootAgentsBots
 
 
@@ -168,20 +170,63 @@ class WootConnector(BaseConnector):
         is_private = (metadata or {}).get("private", False)
         
         log.debug(f"Sending message to Chatwoot acc: {lead.account_id}, inbox: {lead.inbox_id}, conv: {lead.conversation_id}, private:{is_private}, text: {text}")   
-        
-        await send_text_message(base_url=self.chatwoot_url,
-                                account_id=lead.account_id,
-                                conversation_id=lead.conversation_id,
-                                access_key=self.access_key,
-                                content=text,
-                                content_attributes=metadata,
-                                message_type="outgoing",
-                                private=is_private)
+        client = ChatwootMessages(base_url=self.chatwoot_url,
+                                  account_id=lead.account_id,
+                                  access_key=self.access_key)
+            
+        await client.send_text_message(conversation_id=lead.conversation_id,
+                                       content=text,
+                                       content_attributes=metadata,
+                                       message_type="outgoing",
+                                       private=is_private)
         
     async def send_typing_action(self, lead: WootLead):    
         log.warning("Chatwoot typing action is not implemented yet")
         
         
+        
+    async def send_image_message(self, 
+                                 lead: WootLead, 
+                                 image: Any, 
+                                 filename:str, 
+                                 caption:str = None, 
+                                 metadata: dict = {}, 
+                                 is_partial: bool = True):
+        
+        client = ChatwootMessages(base_url=self.chatwoot_url,
+                                  account_id=lead.account_id,
+                                  access_key=self.access_key)
+        
+        # if image is a file path, read the file
+        # -------------------------------------------------------------
+        if isinstance(image, str) and os.path.exists(image):
+            with open(image, "rb") as f:
+                b64_img = base64.b64encode(f.read()).decode()
+        elif isinstance(image, bytes):
+            b64_img = base64.b64encode(image).decode()
+        elif isinstance(image, str):
+            if image.startswith("data:image"):
+                b64_img = image.split("base64,")[1]
+            if image.startswith("http"):
+                # download the image
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(image) as resp:
+                        b64_img = base64.b64encode(await resp.read()).decode()
+                        
+        else:
+            raise ValueError("image must be a url/path to a file, a bytes object or a base64 string")
+        # -------------------------------------------------------------
+        is_private = (metadata or {}).get("private", False)
+        attach = {
+            "type": "b64",
+            "content": b64_img,
+            "fileName": filename,
+        }        
+        
+        await client.send_image_message(conversation_id=lead.conversation_id,
+                                        attach=attach,
+                                        text=caption,
+                                        is_private=is_private)
 
 
     def name(self) -> str:

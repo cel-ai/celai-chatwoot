@@ -20,6 +20,7 @@ from celai_chatwoot.connector import WootConnector
 from cel.gateway.message_gateway import MessageGateway, StreamMode
 from cel.assistants.macaw.macaw_assistant import MacawAssistant
 from cel.prompt.prompt_template import PromptTemplate
+from cel.gateway.request_context import RequestContext
 
 
 # Setup prompt
@@ -34,6 +35,20 @@ prompt_template = PromptTemplate(prompt)
 ast = MacawAssistant(
     prompt=prompt_template
 )
+    
+@ast.event('message')
+async def handle_message(session, ctx: RequestContext):
+    log.critical(f"Got message event with message!")
+    
+    if ctx.message.text == "img":
+        await ctx.connector.send_image_message(
+            ctx.lead,
+            "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png",
+            "This is an image"
+        )
+        return RequestContext.cancel_response()
+
+
 
 # Create the Message Gateway - This component is the core of the assistant
 # It handles the communication between the assistant and the connectors
