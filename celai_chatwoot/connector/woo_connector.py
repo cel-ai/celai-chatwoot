@@ -72,13 +72,17 @@ class WootConnector(BaseConnector):
         
         try:
             log.debug("Received Chatwoot request")
-            log.debug(payload)
+            # log.debug(payload)
 
             if payload.get("message_type", "outgoing") == "outgoing":
                 log.debug("Ignoring outgoing message")
                 return
             
             msg = await WootMessage.load_from_message(payload, connector=self)
+            
+            has_attachments = msg.attachments is not None and len(msg.attachments) > 0
+            if has_attachments:
+                log.debug(f"Received message with attachments: {msg.attachments}")
             
             assert isinstance(msg, WootMessage), "msg must be an instance of WootMessage"
             

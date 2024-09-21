@@ -55,6 +55,19 @@ The `WootConnector` requires the following environment variables to be set:
 
 Run your Cel.ai assistant, then a new Chatwoot bot called "Bot Name" will be created in your Chatwoot instance. Assign the bot to any Inbox you want to use it with.
 
+## Implemented Features
+
+|                     | RECEIVE | SEND  |
+|---------------------|:-------:|:-----:|
+| **Text**            |    ✅    |   ✅   |
+| **Image**           |    ✅    |   ❌   |
+| **Audio**           |    ✅    |   ❌   |
+| **Files**           |    ✅    |   ❌   |
+| **Custom Attributes** |    ❌    |   ❌   |
+| **Video**           |    ❌    |   ❌   |
+| **Location**        |    ✅    |   ❌   |
+| **Buttons**         |    -    |   ❌   |
+| **Templates**       |    -    |   ❌   |
 
 ## Roadmap
 

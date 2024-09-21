@@ -1,0 +1,152 @@
+{
+    "account": {
+        "id": 8,
+        "name": "Demos"
+    },
+    "additional_attributes": {},
+    "content_attributes": {},
+    "content_type": "text",
+    "content": null,
+    "conversation": {
+        "additional_attributes": {
+            "chat_id": 1320141990
+        },
+        "can_reply": true,
+        "channel": "Channel::Telegram",
+        "contact_inbox": {
+            "id": 6981,
+            "contact_id": 6849,
+            "inbox_id": 216,
+            "source_id": "1320141990",
+            "created_at": "2024-09-21T04:41:45.211Z",
+            "updated_at": "2024-09-21T04:41:45.211Z",
+            "hmac_verified": false,
+            "pubsub_token": "d4EAQrREKUcMtTJCcmcTiEn5"
+        },
+        "id": 35,
+        "inbox_id": 216,
+        "messages": [
+            {
+                "id": 595490,
+                "content": null,
+                "account_id": 8,
+                "inbox_id": 216,
+                "conversation_id": 35,
+                "message_type": 0,
+                "created_at": 1726894902,
+                "updated_at": "2024-09-21T05:01:42.712Z",
+                "private": false,
+                "status": "sent",
+                "source_id": "9",
+                "content_type": "text",
+                "content_attributes": {},
+                "sender_type": "Contact",
+                "sender_id": 6849,
+                "external_source_ids": {},
+                "additional_attributes": {},
+                "processed_message_content": null,
+                "conversation": {
+                    "assignee_id": null,
+                    "unread_count": 1,
+                    "last_activity_at": 1726894902
+                },
+                "attachments": [
+                    {
+                        "id": 15184,
+                        "message_id": 595490,
+                        "file_type": "location",
+                        "account_id": 8,
+                        "coordinates_lat": -34.574992,
+                        "coordinates_long": -58.502302,
+                        "fallback_title": null,
+                        "data_url": null
+                    }
+                ],
+                "sender": {
+                    "additional_attributes": {
+                        "username": "cowbe1985",
+                        "language_code": "en"
+                    },
+                    "custom_attributes": {},
+                    "email": null,
+                    "id": 6849,
+                    "identifier": null,
+                    "name": "AMPer ",
+                    "phone_number": null,
+                    "thumbnail": "",
+                    "type": "contact"
+                }
+            }
+        ],
+        "labels": [],
+        "meta": {
+            "sender": {
+                "additional_attributes": {
+                    "username": "cowbe1985",
+                    "language_code": "en"
+                },
+                "custom_attributes": {},
+                "email": null,
+                "id": 6849,
+                "identifier": null,
+                "name": "AMPer ",
+                "phone_number": null,
+                "thumbnail": "",
+                "type": "contact"
+            },
+            "assignee": null,
+            "team": null,
+            "hmac_verified": false
+        },
+        "status": "open",
+        "custom_attributes": {},
+        "snoozed_until": null,
+        "unread_count": 1,
+        "first_reply_created_at": "2024-09-21T04:42:30.327Z",
+        "priority": null,
+        "agent_last_seen_at": 1726894319,
+        "contact_last_seen_at": 0,
+        "timestamp": 1726894902,
+        "created_at": 1726893705
+    },
+    "created_at": "2024-09-21T05:01:42.712Z",
+    "id": 595490,
+    "inbox": {
+        "id": 216,
+        "name": "Test Bot"
+    },
+    "message_type": "incoming",
+    "private": false,
+    "sender": {
+        "account": {
+            "id": 8,
+            "name": "Demos"
+        },
+        "additional_attributes": {
+            "username": "cowbe1985",
+            "language_code": "en"
+        },
+        "avatar": "",
+        "custom_attributes": {},
+        "email": null,
+        "id": 6849,
+        "identifier": null,
+        "name": "AMPer ",
+        "phone_number": null,
+        "thumbnail": ""
+    },
+    "source_id": "9",
+    "attachments": [
+        {
+            "id": 15184,
+            "message_id": 595490,
+            "file_type": "location",
+            "account_id": 8,
+            "coordinates_lat": -34.574992,
+            "coordinates_long": -58.502302,
+            "fallback_title": null,
+            "data_url": null
+        }
+    ],
+    "event": "message_created"
+}

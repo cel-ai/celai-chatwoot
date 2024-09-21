@@ -1,0 +1,152 @@
+{
+    "account": {
+        "id": 8,
+        "name": "Demos"
+    },
+    "additional_attributes": {},
+    "content_attributes": {},
+    "content_type": "text",
+    "content": "sample pdf for testing",
+    "conversation": {
+        "additional_attributes": {
+            "chat_id": 1320141990
+        },
+        "can_reply": true,
+        "channel": "Channel::Telegram",
+        "contact_inbox": {
+            "id": 6981,
+            "contact_id": 6849,
+            "inbox_id": 216,
+            "source_id": "1320141990",
+            "created_at": "2024-09-21T04:41:45.211Z",
+            "updated_at": "2024-09-21T04:41:45.211Z",
+            "hmac_verified": false,
+            "pubsub_token": "d4EAQrREKUcMtTJCcmcTiEn5"
+        },
+        "id": 35,
+        "inbox_id": 216,
+        "messages": [
+            {
+                "id": 595520,
+                "content": "sample pdf for testing",
+                "account_id": 8,
+                "inbox_id": 216,
+                "conversation_id": 35,
+                "message_type": 0,
+                "created_at": 1726895312,
+                "updated_at": "2024-09-21T05:08:32.046Z",
+                "private": false,
+                "status": "sent",
+                "source_id": "10",
+                "content_type": "text",
+                "content_attributes": {},
+                "sender_type": "Contact",
+                "sender_id": 6849,
+                "external_source_ids": {},
+                "additional_attributes": {},
+                "processed_message_content": "sample pdf for testing",
+                "conversation": {
+                    "assignee_id": null,
+                    "unread_count": 1,
+                    "last_activity_at": 1726895312
+                },
+                "attachments": [
+                    {
+                        "id": 15185,
+                        "message_id": 595520,
+                        "file_type": "file",
+                        "account_id": 8,
+                        "extension": null,
+                        "data_url": "https://chatwoot.leapfinancial.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcGs4IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--67392c158ee9d2e382c576d70eaba10ca95c786e/file_2.pdf",
+                        "thumb_url": "",
+                        "file_size": 18810
+                    }
+                ],
+                "sender": {
+                    "additional_attributes": {
+                        "username": "cowbe1985",
+                        "language_code": "en"
+                    },
+                    "custom_attributes": {},
+                    "email": null,
+                    "id": 6849,
+                    "identifier": null,
+                    "name": "AMPer ",
+                    "phone_number": null,
+                    "thumbnail": "",
+                    "type": "contact"
+                }
+            }
+        ],
+        "labels": [],
+        "meta": {
+            "sender": {
+                "additional_attributes": {
+                    "username": "cowbe1985",
+                    "language_code": "en"
+                },
+                "custom_attributes": {},
+                "email": null,
+                "id": 6849,
+                "identifier": null,
+                "name": "AMPer ",
+                "phone_number": null,
+                "thumbnail": "",
+                "type": "contact"
+            },
+            "assignee": null,
+            "team": null,
+            "hmac_verified": false
+        },
+        "status": "open",
+        "custom_attributes": {},
+        "snoozed_until": null,
+        "unread_count": 1,
+        "first_reply_created_at": "2024-09-21T04:42:30.327Z",
+        "priority": null,
+        "agent_last_seen_at": 1726894903,
+        "contact_last_seen_at": 0,
+        "timestamp": 1726895312,
+        "created_at": 1726893705
+    },
+    "created_at": "2024-09-21T05:08:32.046Z",
+    "id": 595520,
+    "inbox": {
+        "id": 216,
+        "name": "Test Bot"
+    },
+    "message_type": "incoming",
+    "private": false,
+    "sender": {
+        "account": {
+            "id": 8,
+            "name": "Demos"
+        },
+        "additional_attributes": {
+            "username": "cowbe1985",
+            "language_code": "en"
+        },
+        "avatar": "",
+        "custom_attributes": {},
+        "email": null,
+        "id": 6849,
+        "identifier": null,
+        "name": "AMPer ",
+        "phone_number": null,
+        "thumbnail": ""
+    },
+    "source_id": "10",
+    "attachments": [
+        {
+            "id": 15185,
+            "message_id": 595520,
+            "file_type": "file",
+            "account_id": 8,
+            "extension": null,
+            "data_url": "https://chatwoot.celai.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcGs4IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--67392c158ee9d2e382c576d70eaba10ca95c786e/file_2.pdf",
+            "thumb_url": "",
+            "file_size": 18810
+        }
+    ],
+    "event": "message_created"
+}
