@@ -45,7 +45,14 @@ async def handle_message(session, ctx: RequestContext):
             ctx.lead,
             "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png",
             "This is an image"
-        )
+        )       
+        return RequestContext.cancel_response()
+    
+    if ctx.message.text == "audio":
+        await ctx.connector.send_audio_message(
+            ctx.lead,
+            "https://www.w3schools.com/html/horse.mp3"
+        )       
         return RequestContext.cancel_response()
 
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "celai-chatwoot"
-version = "0.1.4"
+version = "0.1.5"
 description = ""
 authors = ["Alex Martin <alejamp@gmail.com>"]
 readme = "README.md"
@@ -23,6 +23,7 @@ python = "^3.11"
 # Dependencies for the project:
 celai = "^0.1.14"
 aiohttp = ">=3.9.5"
+filetype = ">=1.2.0"
 
 
 [tool.poetry.group.dev.dependencies]

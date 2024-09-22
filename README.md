@@ -61,12 +61,12 @@ Run your Cel.ai assistant, then a new Chatwoot bot called "Bot Name" will be cre
 |---------------------|:-------:|:-----:|
 | **Text**            |    ✅    |   ✅   |
 | **Image**           |    ✅    |   ✅   |
-| **Audio**           |    ✅    |   ❌   |
+| **Audio**           |    ✅    |   ✅   |
 | **Files**           |    ✅    |   ❌   |
-| **Custom Attributes** |    ❌    |   ❌   |
+| **Custom Attributes** |    ❌    |   ✅   |
 | **Video**           |    ❌    |   ❌   |
 | **Location**        |    ✅    |   ❌   |
-| **Buttons**         |    -    |   ❌   |
+| **Buttons**         |    -    |   ✅   |
 | **Templates**       |    -    |   ❌   |
 
 ## Roadmap

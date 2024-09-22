@@ -1,16 +1,11 @@
 import asyncio
-import base64
-import os
 import json
 from typing import Any, Dict
 from urllib.parse import urljoin
-import aiohttp
 from loguru import logger as log
-from aiogram import Bot
 from fastapi import APIRouter, BackgroundTasks
 from loguru import logger as log
 import shortuuid
-# import json
 from cel.comms.utils import async_run
 from cel.gateway.model.base_connector import BaseConnector
 from cel.gateway.message_gateway import StreamMode
@@ -23,7 +18,7 @@ from cel.gateway.model.outgoing import OutgoingMessage,\
 
 from celai_chatwoot.connector.model.woot_lead import WootLead
 from celai_chatwoot.connector.model.woot_message import WootMessage
-from celai_chatwoot.connector.msg_utils import ChatwootMessages
+from celai_chatwoot.connector.msg_utils import ChatwootMessages, ChatwootAttachment
 from .bot_utils import ChatwootAgentsBots
 
 
@@ -180,6 +175,7 @@ class WootConnector(BaseConnector):
                                        message_type="outgoing",
                                        private=is_private)
         
+        
     async def send_typing_action(self, lead: WootLead):    
         log.warning("Chatwoot typing action is not implemented yet")
         
@@ -197,36 +193,38 @@ class WootConnector(BaseConnector):
                                   account_id=lead.account_id,
                                   access_key=self.access_key)
         
-        # if image is a file path, read the file
-        # -------------------------------------------------------------
-        if isinstance(image, str) and os.path.exists(image):
-            with open(image, "rb") as f:
-                b64_img = base64.b64encode(f.read()).decode()
-        elif isinstance(image, bytes):
-            b64_img = base64.b64encode(image).decode()
-        elif isinstance(image, str):
-            if image.startswith("data:image"):
-                b64_img = image.split("base64,")[1]
-            if image.startswith("http"):
-                # download the image
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(image) as resp:
-                        b64_img = base64.b64encode(await resp.read()).decode()
-                        
-        else:
-            raise ValueError("image must be a url/path to a file, a bytes object or a base64 string")
-        # -------------------------------------------------------------
         is_private = (metadata or {}).get("private", False)
-        attach = {
-            "type": "b64",
-            "content": b64_img,
-            "fileName": filename,
-        }        
+              
+        attach = ChatwootAttachment(type="image", 
+                                    content=image, 
+                                    fileName=filename)
         
-        await client.send_image_message(conversation_id=lead.conversation_id,
-                                        attach=attach,
-                                        text=caption,
-                                        is_private=is_private)
+        await client.send_attachment(conversation_id=lead.conversation_id,
+                                     attach=attach,
+                                     text=caption,
+                                     is_private=is_private)
+        
+    async def send_audio_message(self, 
+                                 lead: WootLead, 
+                                 content: Any, 
+                                 filename:str=None,
+                                 caption:str = None, 
+                                 metadata: dict = {}):
+        
+        client = ChatwootMessages(base_url=self.chatwoot_url,
+                                  account_id=lead.account_id,
+                                  access_key=self.access_key)
+        
+        is_private = (metadata or {}).get("private", False)
+        attach = ChatwootAttachment(type="audio",
+                                    content=content, 
+                                    fileName=filename)
+        
+        await client.send_attachment(conversation_id=lead.conversation_id,
+                                     attach=attach,
+                                     text=caption,
+                                     is_private=is_private)
+                                 
 
 
     def name(self) -> str:
