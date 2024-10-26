@@ -107,12 +107,26 @@ class ChatwootAgentsBots:
         
         if bot:
             bot_id = bot["id"]
-            log.debug(f"Bot {name} id:{bot_id} found. Updating bot with webhook url {outgoing_url}")
+            log.debug(f"Bot '{name}' id:{bot_id} found. Updating bot with webhook url {outgoing_url}")
             return await self.update_agent_bot(bot_id, name, description, outgoing_url)
             
-        log.warning(f"Bot {name} not found. Creating bot with webhook url {outgoing_url}")
+        log.warning(f"Bot '{name}' not found. Creating bot with webhook url {outgoing_url}")
         return await self.create_agent_bot(name, description, outgoing_url)
         
+        
+    # add bot to inbox https://app.chatwoot.com/api/v1/accounts/{account_id}/inboxes/{id}/set_agent_bot
+    async def assign_bot_to_inbox(self, inbox_id: str | int, agent_bot_id: str | int) -> Dict[str, Any]:
+        url = f"{self.base_url}/api/v1/accounts/{self.account_id}/inboxes/{inbox_id}/set_agent_bot"
+        log.debug(f"Adding bot to inbox at Chatwoot url: {url}")
+
+        payload = {
+            'agent_bot': agent_bot_id
+        }
+
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, json=payload, headers=self.headers) as response:
+                response_data = await response.json()
+                return response_data
 
 
 
@@ -148,13 +162,21 @@ if __name__ == "__main__":
         # find bot by name
         log.debug(f"Bot found: {bot}")
         
+        bot_id = bot["id"]
         
+        # list bots
+        bots = await client.list_agent_bots()
+        log.debug(f"Bots: {bots}")
         
-        
-        
-        
-        
+        for b in bots:
+            #  show id, name, description
+            log.debug(f"Bot: {b['id']} {b['name']} {b['description']}")
+            
+        # assign bot to inbox 
+        inbox_id = 1
+        bot_id = 1
+        await client.assign_bot_to_inbox(inbox_id, bot_id)
 
-
+        print("Done!")
 
     asyncio.run(main())

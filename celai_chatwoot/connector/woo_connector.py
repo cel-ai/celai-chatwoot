@@ -32,6 +32,7 @@ class WootConnector(BaseConnector):
                  account_id: str,
                  access_key: str,
                  chatwoot_url: str,
+                 inbox_id: str,
                  bot_description: str = "Celai Bot",
                  stream_mode: StreamMode = StreamMode.SENTENCE):
         log.debug("Creating Chatwoot connector")
@@ -48,8 +49,9 @@ class WootConnector(BaseConnector):
         self.bot_name = bot_name
         self.account_id = account_id
         self.access_key = access_key
+        self.inbox_id = inbox_id
         self.chatwoot_url = chatwoot_url
-        self.bot_description = bot_description
+        self.bot_description = bot_description or "Celai generated Bot"
         
 
     def __create_routes(self, router: APIRouter):
@@ -243,30 +245,35 @@ class WootConnector(BaseConnector):
         # verify if the webhook_url is set and is HTTPS
         assert context.webhook_url, "webhook_url must be set in the context"
         assert context.webhook_url.startswith("https"),\
-            f"webhook_url must be HTTPS, got: {context.webhook_url}.\
-            Be sure that your url is public and has a valid SSL certificate."
+            (f"webhook_url must be HTTPS, got: {context.webhook_url}"
+            "Be sure that your url is public and has a valid SSL certificate.")
         
         async def update_bot():
-            
+            try:
+                base_url = f"{context.webhook_url}"
+                webhook_url = urljoin(base_url, f"{self.router.prefix}/webhook/{self.security_token}")
+                
+                log.debug(f"Updating Chatwoot Bot webhook url to: {webhook_url}")
 
-            base_url = f"{context.webhook_url}"
-            webhook_url = urljoin(base_url, f"{self.router.prefix}/webhook/{self.security_token}")
-            
-            # webhook_url = f"{context.webhook_url}/{self.router.prefix}/webhook/{self.security_token}"
-            log.debug(f"Updating Chatwoot Bot webhook url to: {webhook_url}")
-            # TODO: update chatwoot webhook url by bot name
-            client = ChatwootAgentsBots(
-                base_url=self.chatwoot_url,
-                account_id=self.account_id,
-                access_key=self.access_key
-            )
-            
-            res = await client.upsert_bot(name=self.bot_name,
-                                          outgoing_url=webhook_url,
-                                          description=self.bot_description)
-            
-            log.debug(f"Chatwoot Bot updated: {res}")
-            
+                client = ChatwootAgentsBots(
+                    base_url=self.chatwoot_url,
+                    account_id=self.account_id,
+                    access_key=self.access_key
+                )
+                
+                bot = await client.upsert_bot(name=self.bot_name,
+                                            outgoing_url=webhook_url,
+                                            description=self.bot_description)
+                               
+                bot_id = bot["id"]
+                log.debug(f"Chatwoot Bot '{self.bot_name}' id:{bot_id} updated. Adding bot to inbox {self.inbox_id}")
+                await client.assign_bot_to_inbox(inbox_id=self.inbox_id, agent_bot_id=bot_id)
+                log.debug(f"Chatwoot Bot '{self.bot_name}' assigned to inbox {self.inbox_id}")
+                
+            except Exception as e:
+                log.error(f"Error updating Chatwoot bot: {e}")
+                log.exception(e)
+                raise e
         try:
             loop = asyncio.get_running_loop()
             loop.create_task(update_bot())
