@@ -14,7 +14,6 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event.pull_request.merged == true }} 
     runs-on: ubuntu-latest
     environment: release
     permissions:
@@ -41,8 +40,8 @@ jobs:
         pip install poetry
         poetry install --with dev
 
-        - name: Set up Git credentials for pushing
-        run: git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+    - name: Set up Git credentials for pushing
+      run: git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
