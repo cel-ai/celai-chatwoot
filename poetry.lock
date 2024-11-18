@@ -390,13 +390,13 @@ files = [
 
 [[package]]
 name = "celai"
-version = "0.1.14"
-description = ""
+version = "0.3.24"
+description = "AI Driven Communication Platform. Assistants made easy."
 optional = false
 python-versions = "<4.0,>=3.11"
 files = [
-    {file = "celai-0.1.14-py3-none-any.whl", hash = "sha256:acf41b1c7308d809af8c149f2665d86968ed481ef3a604fbea9ec1d43620ef66"},
-    {file = "celai-0.1.14.tar.gz", hash = "sha256:da01a64c1c73017a21d4ac4bdecc4e1936fdd387c0354cf688cd0d2f55db5081"},
+    {file = "celai-0.3.24-py3-none-any.whl", hash = "sha256:2f862df01ae1a1ac5de88ce72357874504658ab1239d473967368f00974ed04c"},
+    {file = "celai-0.3.24.tar.gz", hash = "sha256:d0221ddef15fc5f458b7f2f07dacda5d42c4e5f22b68296b5a30d4a93b5ccb9e"},
 ]
 
 [package.dependencies]
@@ -408,6 +408,7 @@ chromadb = ">=0.5.0"
 deepgram-sdk = ">=3.2.7"
 dictdiffer = ">=0.9.0"
 diskcache = ">=5.6.3"
+elevenlabs = ">=1.9.0"
 fakeredis = ">=2.23.2"
 geopy = ">=2.4.1"
 halo = ">=0.0.31"
@@ -801,6 +802,28 @@ doq = ["aioquic (>=0.9.25)"]
 idna = ["idna (>=3.6)"]
 trio = ["trio (>=0.23)"]
 wmi = ["wmi (>=1.5.1)"]
+
+[[package]]
+name = "elevenlabs"
+version = "1.12.1"
+description = ""
+optional = false
+python-versions = "<4.0,>=3.8"
+files = [
+    {file = "elevenlabs-1.12.1-py3-none-any.whl", hash = "sha256:ea36fb437fd19cb7c37ed2bb690f18c2fe00b88b8619fdac882a9db9f8676aba"},
+    {file = "elevenlabs-1.12.1.tar.gz", hash = "sha256:7c03526b87e14e39e25fe84dbaaa84e0a4f467b6d3bf859503ce3e3a9125d07b"},
+]
+
+[package.dependencies]
+httpx = ">=0.21.2"
+pydantic = ">=1.9.2"
+pydantic-core = ">=2.18.2,<3.0.0"
+requests = ">=2.20"
+typing_extensions = ">=4.0.0"
+websockets = ">=11.0"
+
+[package.extras]
+pyaudio = ["pyaudio (>=0.2.14)"]
 
 [[package]]
 name = "eval-type-backport"
@@ -4620,4 +4643,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "a1f3ef6cd0d5754f45ca864e5e40b833852297257b5c136a5a233f6f62507027"
+content-hash = "631bfd88714b274c7b3ab6805b3052a820aac964516069137265bf754e7dc9a9"
