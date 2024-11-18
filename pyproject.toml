@@ -21,7 +21,7 @@ Issues = "https://github.com/cel-ai/celai-chatwoot/issues"
 #Runtime
 python = "^3.11"
 # Dependencies for the project:
-celai = "^0.1.14"
+celai = ">=0.1.30"
 aiohttp = ">=3.9.5"
 filetype = ">=1.2.0"
 
