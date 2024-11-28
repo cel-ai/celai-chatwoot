@@ -34,7 +34,8 @@ class WootConnector(BaseConnector):
                  chatwoot_url: str,
                  inbox_id: str,
                  bot_description: str = "Celai Bot",
-                 stream_mode: StreamMode = StreamMode.SENTENCE):
+                 stream_mode: StreamMode = StreamMode.SENTENCE,
+                 ssl: bool = False):
         log.debug("Creating Chatwoot connector")
 
         self.router = APIRouter(prefix="/chatwoot")
@@ -52,6 +53,7 @@ class WootConnector(BaseConnector):
         self.inbox_id = inbox_id
         self.chatwoot_url = chatwoot_url
         self.bot_description = bot_description or "Celai generated Bot"
+        self.ssl = ssl
         
 
     def __create_routes(self, router: APIRouter):
@@ -169,7 +171,8 @@ class WootConnector(BaseConnector):
         log.debug(f"Sending message to Chatwoot acc: {lead.account_id}, inbox: {lead.inbox_id}, conv: {lead.conversation_id}, private:{is_private}, text: {text}")   
         client = ChatwootMessages(base_url=self.chatwoot_url,
                                   account_id=lead.account_id,
-                                  access_key=self.access_key)
+                                  access_key=self.access_key,
+                                  ssl=self.ssl)
             
         await client.send_text_message(conversation_id=lead.conversation_id,
                                        content=text,
@@ -193,7 +196,8 @@ class WootConnector(BaseConnector):
         
         client = ChatwootMessages(base_url=self.chatwoot_url,
                                   account_id=lead.account_id,
-                                  access_key=self.access_key)
+                                  access_key=self.access_key,
+                                  ssl=self.ssl)
         
         is_private = (metadata or {}).get("private", False)
               
@@ -215,7 +219,8 @@ class WootConnector(BaseConnector):
         
         client = ChatwootMessages(base_url=self.chatwoot_url,
                                   account_id=lead.account_id,
-                                  access_key=self.access_key)
+                                  access_key=self.access_key,
+                                  ssl=self.ssl)
         
         is_private = (metadata or {}).get("private", False)
         attach = ChatwootAttachment(type="audio",
@@ -258,7 +263,8 @@ class WootConnector(BaseConnector):
                 client = ChatwootAgentsBots(
                     base_url=self.chatwoot_url,
                     account_id=self.account_id,
-                    access_key=self.access_key
+                    access_key=self.access_key,
+                    ssl=self.ssl
                 )
                 
                 bot = await client.upsert_bot(name=self.bot_name,
