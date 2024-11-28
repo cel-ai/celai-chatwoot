@@ -9,7 +9,8 @@ class ChatwootAgentsBots:
                  base_url: str, 
                  account_id: str, 
                  access_key: str, 
-                 headers: Optional[Dict[str, str]] = None):
+                 headers: Optional[Dict[str, str]] = None,
+                 ssl: bool = False):
         self.base_url = base_url
         self.account_id = account_id
         self.access_key = access_key
@@ -17,13 +18,13 @@ class ChatwootAgentsBots:
         self.headers.update({
             'api_access_token': access_key
         })
+        self.ssl = ssl
 
     async def list_agent_bots(self) -> Dict[str, Any]:
         url = f"{self.base_url}/api/v1/accounts/{self.account_id}/agent_bots"
         log.debug(f"Listing agent bots from Chatwoot url: {url}")
 
-        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
-        #async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:        
             async with session.get(url, headers=self.headers) as response:
                 response_data = await response.json()
                 return response_data
@@ -45,7 +46,7 @@ class ChatwootAgentsBots:
 
         payload = {k: v for k, v in payload.items() if v is not None}
 
-        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:
             async with session.post(url, json=payload, headers=self.headers) as response:
                 response_data = await response.json()
                 return response_data
@@ -63,7 +64,7 @@ class ChatwootAgentsBots:
         url = f"{self.base_url}/api/v1/accounts/{self.account_id}/agent_bots/{agent_bot_id}"
         log.debug(f"Getting agent bot from Chatwoot url: {url}")
 
-        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:
             async with session.get(url, headers=self.headers) as response:
                 response_data = await response.json()
                 return response_data
@@ -85,7 +86,7 @@ class ChatwootAgentsBots:
         }
 
         payload = {k: v for k, v in payload.items() if v is not None}
-        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:
         #async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
             async with session.patch(url, json=payload, headers=self.headers) as response:
                 response_data = await response.json()
@@ -124,7 +125,7 @@ class ChatwootAgentsBots:
             'agent_bot': agent_bot_id
         }
 
-        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=False)) as session:
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:
             async with session.post(url, json=payload, headers=self.headers) as response:
                 response_data = await response.json()
                 return response_data
