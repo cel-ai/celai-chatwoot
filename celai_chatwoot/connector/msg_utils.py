@@ -24,7 +24,8 @@ class ChatwootMessages:
                  base_url: str, 
                  account_id: str, 
                  access_key: str, 
-                 headers: Optional[Dict[str, str]] = None):
+                 headers: Optional[Dict[str, str]] = None,
+                 ssl: bool = False):
         self.base_url = base_url
         self.account_id = account_id
         self.access_key = access_key
@@ -32,6 +33,7 @@ class ChatwootMessages:
         self.headers.update({
             'api_access_token': access_key
         })
+        self.ssl = ssl
         
         
     async def __build_content(self, attach: ChatwootAttachment):        
@@ -57,7 +59,7 @@ class ChatwootMessages:
                 b64_img = content.split("base64,")[1]
             if content.startswith("http"):
                 # download the image
-                async with aiohttp.ClientSession() as session:
+                async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:
                     async with session.get(content) as resp:
                         b64_img = base64.b64encode(await resp.read()).decode()
             if len(content) > 100:
@@ -78,7 +80,7 @@ class ChatwootMessages:
                 b64_audio = content.split("base64,")[1]
             if content.startswith("http"):
                 # download the audio
-                async with aiohttp.ClientSession() as session:
+                async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:
                     async with session.get(content) as resp:
                         b64_audio = base64.b64encode(await resp.read()).decode()
                         
@@ -124,7 +126,7 @@ class ChatwootMessages:
         # Remove keys with None values
         payload = {k: v for k, v in payload.items() if v is not None}
 
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:
             async with session.post(url, json=payload, headers=headers) as response:
                 response_data = await response.json()
                 return response_data
@@ -161,7 +163,7 @@ class ChatwootMessages:
                
         
         # Make the HTTP request
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:
             try:
                 async with session.post(url, data=form, headers=self.headers) as response:
                     res = await response.json()
