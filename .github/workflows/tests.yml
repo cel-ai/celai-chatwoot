@@ -1,18 +1,22 @@
-name: Tests
+name: Test
 
 on:
+  # execute the workflow on push events from any branch
   push:
-    branches: [ "main", "dev" ]
+    branches:
+      - "*"
+      
   pull_request:
-    branches: [ "main", "dev" ]
+    branches:
+      - "*"
+
+
 
 jobs:
-  build:
+  run_test:
+    name: Run tests
     runs-on: ubuntu-latest
-    environment: release
-    permissions:
-      # IMPORTANT: this permission is mandatory for trusted publishing
-      id-token: write
+    environment: dev
 
     strategy:
       fail-fast: false
@@ -20,7 +24,20 @@ jobs:
         python-version: ["3.11"]
 
     steps:
-    - uses: actions/checkout@v4
+    
+    # # Exit if a commit is made by GitHub Actions bot
+    # # Skip automatic updates. 
+    # # There is an action that updates dev branch with main branch
+    # - name: Exit if triggered by GitHub Actions bot
+    #   run: |
+    #     if [ "${{ github.actor }}" = "github-actions[bot]" ]; then
+    #       echo "Commit made by GitHub Actions bot, exiting."
+    #       exit 0
+    #     fi    
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
@@ -38,7 +55,5 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
-      env:
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
         poetry run pytest
