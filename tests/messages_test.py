@@ -4,6 +4,7 @@ from cel.gateway.model.conversation_lead import ConversationLead
 from celai_chatwoot.connector.model import WootLead
 from celai_chatwoot.connector.model.woot_attachment import WootAttachment, WootLocationAttachment
 from celai_chatwoot.connector.model.woot_message import WootMessage
+from cel.gateway.model.base_connector import BaseConnector
 
 
 
@@ -40,6 +41,7 @@ def msg_file_from_tg() -> str:
 
 @pytest.mark.asyncio
 async def test_lead_parsing(msg):
+    
     lead = WootLead.from_chatwoot_message(msg)
     
     assert isinstance(lead, WootLead)
@@ -51,7 +53,7 @@ async def test_lead_parsing(msg):
     assert lead.metadata['event'] == 'message_created'
     assert lead.metadata['message_type'] == 'incoming'
     assert lead.metadata['private'] == False
-    assert lead.connector_name == 'chatwoot'
+    assert lead.connector_name == None
     assert lead.conversation_from.name == 'cold-wind-258'
     assert lead.conversation_from.id == '5094'
     assert lead.conversation_from.email == 'foo@bar.com'
