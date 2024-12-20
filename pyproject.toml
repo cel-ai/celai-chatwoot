@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "celai-chatwoot"
-version = "0.1.10"
+version = "0.2.0"
 description = ""
 authors = ["Alex Martin <alejamp@gmail.com>"]
 readme = "README.md"
