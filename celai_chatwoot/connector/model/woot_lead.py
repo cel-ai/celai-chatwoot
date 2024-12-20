@@ -10,7 +10,7 @@ class WootLead(ConversationLead):
                  conversation_id:str,
                  message_type: str = None, 
                  **kwargs):
-        super().__init__(connector_name="chatwoot", **kwargs)
+        super().__init__(**kwargs)
         self.account_id = str(account_id)
         self.inbox_id = str(inbox_id)
         self.conversation_id = str(conversation_id)
@@ -37,7 +37,7 @@ class WootLead(ConversationLead):
         )
 
     def __str__(self):
-        return f"TelegramLead: {self.chat_id}"
+        return f"WootLead: {self.account_id}:{self.inbox_id}:{self.conversation_id}"
     
     
     @classmethod

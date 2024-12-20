@@ -22,6 +22,11 @@ from celai_chatwoot.connector.msg_utils import ChatwootMessages, ChatwootAttachm
 from .bot_utils import ChatwootAgentsBots
 
 
+def hash_token(token: str) -> str:
+    """Hash the token using SHA256. Returns last 8 characters of the hash."""
+    import hashlib
+    return hashlib.sha256(token.encode()).hexdigest()[-8:]
+    
 
 
 
@@ -56,10 +61,15 @@ class WootConnector(BaseConnector):
         self.ssl = ssl
         
 
+    def name(self) -> str:
+        hashed_token = hash_token(self.access_key)
+        return f"chatwoot:{hashed_token}:{self.account_id}:{self.inbox_id}"
+
+
     def __create_routes(self, router: APIRouter):
                 
         @router.post(f"/webhook/{self.security_token}")
-        async def telegram_webhook(payload: Dict[Any, Any], background_tasks: BackgroundTasks):
+        async def woot_webhook(payload: Dict[Any, Any], background_tasks: BackgroundTasks):
  
             background_tasks.add_task(self.__process_message, payload)
             return {"status": "ok"}
@@ -123,7 +133,7 @@ class WootConnector(BaseConnector):
         assert isinstance(message, OutgoingMessage),\
             "message must be an instance of OutgoingMessage"
         assert isinstance(message.lead, WootLead),\
-            "lead must be an instance of TelegramLead"
+            "lead must be an instance of WootLead"
         lead = message.lead
         
         if message.type == OutgoingMessageType.TEXT:
@@ -234,8 +244,6 @@ class WootConnector(BaseConnector):
                                  
 
 
-    def name(self) -> str:
-        return "telegram"
         
     def get_router(self) -> APIRouter:
         return self.router
