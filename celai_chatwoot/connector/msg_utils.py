@@ -36,40 +36,64 @@ class ChatwootMessages:
         self.ssl = ssl
         
         
-    async def __build_content(self, attach: ChatwootAttachment):        
+    async def __build_content(self, attach: ChatwootAttachment) -> str:
+        """
+        Based on the attachment type, build the base64-encoded content.
+        """
         if attach.type == "image":
             return await self.__build_content_image(attach.content)
         elif attach.type.startswith("audio"):
             return await self.__build_content_audio(attach.content)
+        elif attach.type == "file":
+            return await self.__build_content_file(attach.content)
 
         raise NotImplementedError(f"ChatwootClient: Unknown attachment type: {attach.type}")
                 
-    async def __build_content_image(self, content: Any):
-        
+    async def __build_content_image(self, content: Any) -> str:
+        """
+        Builds base64-encoded image from various possible inputs:
+          - Local file path
+          - Bytes object
+          - Base64 string (with or without `data:image`)
+          - HTTP URL
+        """
         b64_img = None
         # if image is a file path, read the file
         # -------------------------------------------------------------
         if isinstance(content, str) and os.path.exists(content):
+            # content is a file path
             with open(content, "rb") as f:
                 b64_img = base64.b64encode(f.read()).decode()
         elif isinstance(content, bytes):
+            # content is a bytes object
             b64_img = base64.b64encode(content).decode()
         elif isinstance(content, str):
             if content.startswith("data:image"):
                 b64_img = content.split("base64,")[1]
-            if content.startswith("http"):
+            elif content.startswith("http"):
                 # download the image
                 async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:
                     async with session.get(content) as resp:
                         b64_img = base64.b64encode(await resp.read()).decode()
-            if len(content) > 100:
-                b64_img = content
+            else:
+                # Possibly a raw base64 string not prefixed by data:image
+                if len(content) > 100:
+                    b64_img = content
+                else:
+                    raise ValueError("Invalid string content provided for image.")
         else:
             raise ValueError("image must be a url/path to a file, a bytes object or a base64 string")             
         
         return b64_img
       
-    async def __build_content_audio(self, content: str):
+    async def __build_content_audio(self, content: str) -> str:
+        """
+        Builds base64-encoded audio from various possible inputs:
+          - Local file path
+          - Bytes object
+          - Base64 string (with or without `data:audio`)
+          - HTTP URL
+        """
         if isinstance(content, str) and os.path.exists(content):
             with open(content, "rb") as f:
                 b64_audio = base64.b64encode(f.read()).decode()
@@ -78,18 +102,38 @@ class ChatwootMessages:
         elif isinstance(content, str):
             if content.startswith("data:audio"):
                 b64_audio = content.split("base64,")[1]
-            if content.startswith("http"):
-                # download the audio
+            elif content.startswith("http"):
+                # Download the audio
                 async with aiohttp.ClientSession(connector=aiohttp.TCPConnector(ssl=self.ssl)) as session:
                     async with session.get(content) as resp:
                         b64_audio = base64.b64encode(await resp.read()).decode()
-                        
-            if len(content) > 100:
-                b64_audio = content
+            else:
+                # Possibly a raw base64 string not prefixed by data:audio
+                if len(content) > 100:
+                    b64_audio = content
+                else:
+                    raise ValueError("Invalid string content provided for audio.")
         else:
             raise ValueError("audio must be a url/path to a file, a bytes object or a base64 string")             
         
         return b64_audio
+
+    async def __build_content_file(self, content: Any) -> str:
+        """
+        Builds base64-encoded file from various possible inputs:
+          - Local file path
+          - Bytes object
+        """
+        if isinstance(content, bytes):
+            b64_file = base64.b64encode(content).decode()
+        elif isinstance(content, str) and os.path.exists(content):  # Si es una ruta a un archivo
+            with open(content, "rb") as f:
+                b64_file = base64.b64encode(f.read()).decode()
+        else:
+            raise ValueError(
+                "File must be a path to a file or a bytes object")
+
+        return b64_file
         
         
     # -------------------------------------------------------------
@@ -103,6 +147,18 @@ class ChatwootMessages:
         private: Optional[bool] = None,
         headers: Optional[Dict[str, str]] = None
     ) -> Dict[str, Any]:
+        """
+        Sends a text message to the specified conversation in Chatwoot.
+
+        :param conversation_id: The conversation ID.
+        :param content: The text content to send.
+        :param content_attributes: Additional content attributes for Chatwoot (e.g. cards, articles).
+        :param content_type: Type of the message content (e.g. 'input_select', 'cards', 'article').
+        :param message_type: Either "incoming" or "outgoing".
+        :param private: Whether the message is private or not.
+        :param headers: Additional headers, if any.
+        :return: JSON response from Chatwoot.
+        """
         assert message_type in ChatwootMessageTypes, f"message_type must be one of {ChatwootMessageTypes}"
         
         url = f"{self.base_url}/api/v1/accounts/{self.account_id}/conversations/{conversation_id}/messages"
@@ -132,7 +188,17 @@ class ChatwootMessages:
                 return response_data
             
 
-    async def send_attachment(self, conversation_id, attach: ChatwootAttachment=None, text=None, is_private=False, content_attributes=None):
+    async def send_attachment(self, conversation_id, attach: ChatwootAttachment=None, text=None, is_private=False, content_attributes=None) -> Dict[str, Any]:
+        """
+        Sends an attachment (image, audio, or file) along with optional text to Chatwoot.
+
+        :param conversation_id: The ID of the conversation to send the attachment to.
+        :param attach: A ChatwootAttachment instance containing the data.
+        :param text: Optional text message to accompany the attachment.
+        :param is_private: Flag indicating whether the message is private.
+        :param content_attributes: Optional additional attributes (unused in this example).
+        :return: JSON response from Chatwoot.
+        """
         assert isinstance(attach, ChatwootAttachment), "attach must be an instance of ChatwootAttachment"
         
         # Construct the URL
@@ -156,10 +222,24 @@ class ChatwootMessages:
         #     form.add_field("content_type", "input_select")
         
         
-        content = await self.__build_content(attach)
-        buffer = base64.b64decode(content)
-        file_type = filetype.guess(buffer)
-        form.add_field("attachments[]", buffer, filename=attach.fileName or "audio.ogg", content_type=file_type.mime)
+        # Build and decode the base64 content
+        b64_content = await self.__build_content(attach)
+        buffer = base64.b64decode(b64_content)
+
+        # Guess the file mime type
+        guessed_type = filetype.guess(buffer)
+        mime_type = guessed_type.mime if guessed_type else "application/octet-stream"
+
+        file_name = attach.fileName or (
+            "file.ogg" if attach.type.startswith("audio") else "file.bin"
+        )
+
+        form.add_field(
+            "attachments[]",
+            buffer,
+            filename=file_name,
+            content_type=mime_type,
+        )
                
         
         # Make the HTTP request
@@ -167,16 +247,12 @@ class ChatwootMessages:
             try:
                 async with session.post(url, data=form, headers=self.headers) as response:
                     res = await response.json()
-                    print(res)
+                    log.debug(f"Response from Chatwoot: {res}")
                     return res
             except aiohttp.ClientError as e:
-                print(e)    
+                log.error(f"Error sending attachment to Chatwoot: {e}") 
 
-
-
-
-    
-    
+# -------------------------- Example Usage --------------------------
 if __name__ == "__main__":
     
     import os
